@@ -21,7 +21,7 @@ time.sleep(2)
 # Scroll Down to the Slider section
 slider_section = driver.find_element(By.XPATH, "//span/input[@type='range']")  # Adjust locator as needed
 driver.execute_script("arguments[0].scrollIntoView();", slider_section)
-time.sleep(5)
+time.sleep(2)
 
 # Adjust the Slider
 slider = driver.find_element(By.XPATH, "//span[@data-index='0']")  # Adjust locator as needed
@@ -31,7 +31,7 @@ action = ActionChains(driver)
 action.click_and_hold(slider).move_by_offset(200, 0).release().perform()  # Adjust offset to match "820"
 time.sleep(2)
 action.click_and_hold(slider).move_by_offset(-(105), 0).release().perform()
-time.sleep(10)
+time.sleep(2)
 
 
 # Verify the bottom text field value
@@ -49,12 +49,29 @@ text_field = driver.find_element(By.XPATH, "//input[@type='number']")
 # to enter the value into the text field we have to clear the text inside the text field
 actions = ActionChains(driver)
 actions.click(text_field).key_down(Keys.CONTROL).send_keys("a").key_up(Keys.CONTROL).send_keys(Keys.BACKSPACE).perform()
-
-time.sleep(10)
+time.sleep(2)
 
 #to enter value into the text field
 text_field.send_keys("560")
-time.sleep(5)
+time.sleep(2)
+
+checkbox_ids = ["CPT-99091", "CPT-99453", "CPT-99454", "CPT-99474"]  # Replace with actual IDs of the checkboxes
+for checkbox_id in checkbox_ids:
+    checkbox = driver.find_element(By.XPATH, "//input[@type='checkbox']")  # Adjust locator if needed
+    if not checkbox.is_selected():
+        checkbox.click()
+time.sleep(2)
+
+text_field = driver.find_element(By.XPATH, "//input[@type='number']")
+
+# to enter the value into the text field we have to clear the text inside the text field
+actions = ActionChains(driver)
+actions.click(text_field).key_down(Keys.CONTROL).send_keys("a").key_up(Keys.CONTROL).send_keys(Keys.BACKSPACE).perform()
+time.sleep(2)
+
+#to enter value into the text field
+text_field.send_keys("820")
+time.sleep(2)
 
 checkbox_ids = ["CPT-99091", "CPT-99453", "CPT-99454", "CPT-99474"]  # Replace with actual IDs of the checkboxes
 for checkbox_id in checkbox_ids:
@@ -63,28 +80,17 @@ for checkbox_id in checkbox_ids:
         checkbox.click()
 time.sleep(5)
 
-text_field = driver.find_element(By.XPATH, "//input[@type='number']")
+#checking the total reimbursement is $110700
+header_text = driver.find_element(By.CLASS_NAME, "MuiTypography-body1").text
+print(header_text)
 
-# to enter the value into the text field we have to clear the text inside the text field
-actions = ActionChains(driver)
-actions.click(text_field).key_down(Keys.CONTROL).send_keys("a").key_up(Keys.CONTROL).send_keys(Keys.BACKSPACE).perform()
+if header_text == "$110700":
+    print(True)
+else:
+    print(False)
 
-time.sleep(5)
-
-#to enter value into the text field
-text_field.send_keys("820")
-time.sleep(5)
-
-checkbox_ids = ["CPT-99453", "CPT-99454", "CPT-99474"]  # Replace with actual IDs of the checkboxes
-for checkbox_id in checkbox_ids:
-    checkbox = driver.find_element(By.XPATH, "//input[@type='checkbox']")  # Adjust locator if needed
-    if not checkbox.is_selected():
-        checkbox.click()
-time.sleep(5)
-
-
-
-
+#closing the browser
+driver.close()
 
 
 
